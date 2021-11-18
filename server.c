@@ -103,7 +103,10 @@ static void handler(int _){
     gettimeofday(&tmptime, 0);
     long total_time =    (tmptime.tv_usec / 1000 + tmptime.tv_sec * 1000) -    
                         (start_time.tv_usec / 1000 + start_time.tv_sec * 1000);
-    printf("\n%d payloads sent\n%d payloads received\nTime taken: %ld\n", scount, rcount, total_time);
+
+    int sspeed = scount * MAX / total_time * 1000;
+    int rspeed = rcount * MAX / total_time * 1000;
+    printf("\n%d payloads sent, %d bytes/s\n%d payloads received, %d bytes/s\nTime taken: %ld\n", scount, sspeed, rcount, rspeed, total_time);
     exit(EXIT_SUCCESS);
 }
 /** Driver code */
@@ -178,7 +181,6 @@ int main()
     {
         printf("server acccept the client...\n");
     }
-    printf("In main\n");
     // Function for chatting between client and server
     func(connfd);
 

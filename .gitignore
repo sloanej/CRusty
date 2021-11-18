@@ -13,3 +13,6 @@ rust_selection_sort/target/
 # Added by cargo
 
 /target
+
+client 
+server
