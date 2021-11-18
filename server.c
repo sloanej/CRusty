@@ -47,7 +47,9 @@ void cleanup() { WSACleanup(); }
 void func(int sockfd)
 {
     char buff[MAX];
-    int n;
+    //int n;
+    char* str = "Server says hi";
+    int len = 15;
     // infinite loop for chat
     for (;;)
     {
@@ -56,15 +58,17 @@ void func(int sockfd)
         // read the message from client and copy it in buffer
         read(sockfd, buff, sizeof(buff));
         // print buffer which contains the client contents
-        printf("From client: %s\t To client : ", buff);
+        printf("From client: %s", buff);
         bzero(buff, MAX);
-        n = 0;
+
+        /*n = 0;
         // copy server message in the buffer
         while ((buff[n++] = getchar()) != '\n')
         {
             ;
-        }
+        }*/
 
+        memcpy(buff, str, len);
         // and send that buffer to client
         write(sockfd, buff, sizeof(buff));
 

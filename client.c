@@ -37,16 +37,19 @@
 void func(int sockfd)
 {
     char buff[MAX];
-    int n;
+    //int n;
+    char* str = "Client says hi";
+    int len = 15;
     for (;;)
     {
         bzero(buff, sizeof(buff));
-        printf("Enter the string : ");
+        /*printf("Enter the string : ");
         n = 0;
         while ((buff[n++] = getchar()) != '\n')
         {
             ;
-        }
+        }*/
+        memcpy(buff, str, len);
         write(sockfd, buff, sizeof(buff));
         bzero(buff, sizeof(buff));
         read(sockfd, buff, sizeof(buff));
