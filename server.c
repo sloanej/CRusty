@@ -28,9 +28,10 @@
 #include <netdb.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <time.h>
 #endif
 
-#define MAX 80             /**< max. characters per message */
+#define MAX 1073741824             /**< max. characters per message */
 #define PORT 8080          /**< port number to connect to */
 #define SA struct sockaddr /**< shortname for sockaddr */
 
@@ -48,8 +49,13 @@ void func(int sockfd)
 {
     char buff[MAX];
     //int n;
-    char* str = "Server says hi";
-    int len = 15;
+    char* payload = malloc(MAX);
+    srand(time(0));
+    for(int i = 0; i < MAX; i++){
+        printf("creating payload\n");
+        payload[i] = rand() % 2 == 0 ? 'a' : 'b';
+    }
+    printf("completed payload creation\n");
     // infinite loop for chat
     for (;;)
     {
@@ -68,7 +74,7 @@ void func(int sockfd)
             ;
         }*/
 
-        memcpy(buff, str, len);
+        memcpy(buff, payload, MAX);
         // and send that buffer to client
         write(sockfd, buff, sizeof(buff));
 
