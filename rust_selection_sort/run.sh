@@ -1,1 +1,1 @@
-./target/debug/rust_selection_sort $1
+./target/release/rust_selection_sort $1
