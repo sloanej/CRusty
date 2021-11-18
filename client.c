@@ -23,12 +23,17 @@
 #include <netdb.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <time.h>
+#include <sys/time.h>
+#include <signal.h>
 #endif
 
-#define MAX 1073741824       /**< max. characters per message */
+#define MAX 100000       /**< max. characters per message */
 #define PORT 8080          /**< port number to connect to */
 #define SA struct sockaddr /**< shortname for sockaddr */
+
+static int scount = 0;
+static int rcount = 0;
+static struct timeval start_time;
 
 /**
  * Continuous loop to send and receive over the socket.
@@ -44,6 +49,7 @@ void func(int sockfd)
     for(int i = 0; i < MAX; i++){
         payload[i] = rand() % 2 == 0 ? 'a' : 'b';
     }
+    gettimeofday(&start_time, 0);
     for (;;)
     {
         bzero(buff, sizeof(buff));
@@ -54,10 +60,14 @@ void func(int sockfd)
             ;
         }*/
         memcpy(buff, payload, MAX);
-        write(sockfd, buff, sizeof(buff));
+        //printf("Sending payload %d\n", scount++);
+        scount++;
+        write(sockfd, payload, sizeof(buff));
         bzero(buff, sizeof(buff));
+        //printf("Receiving payload %d\n", rcount++);
+        rcount++;
         read(sockfd, buff, sizeof(buff));
-        printf("From Server : %s", buff);
+        //printf("From Server : %s", buff);
         if ((strncmp(buff, "exit", 4)) == 0)
         {
             printf("Client Exit...\n");
@@ -71,12 +81,26 @@ void func(int sockfd)
 void cleanup() { WSACleanup(); }
 #endif
 
+
+static void handler(int _){
+    (void)_;
+    struct timeval tmptime;
+    gettimeofday(&tmptime, 0);
+    long total_time =    (tmptime.tv_usec / 1000 + tmptime.tv_sec * 1000) -    
+                        (start_time.tv_usec / 1000 + start_time.tv_sec * 1000);
+    printf("\n%d payloads sent\n%d payloads received\nTime taken: %ld\n", scount, rcount, total_time);
+    exit(EXIT_SUCCESS);
+}
+
+
 /**
  * @brief Driver code
  */
 int main()
 {
+    signal(SIGINT, handler);
 #ifdef _WIN32
+    
     // when using winsock2.h, startup required
     WSADATA wsData;
     if (WSAStartup(MAKEWORD(2, 2), &wsData) != 0)

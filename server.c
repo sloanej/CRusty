@@ -28,10 +28,11 @@
 #include <netdb.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <time.h>
+#include <sys/time.h>
+#include <signal.h>
 #endif
 
-#define MAX 1073741824             /**< max. characters per message */
+#define MAX 100000             /**< max. characters per message */
 #define PORT 8080          /**< port number to connect to */
 #define SA struct sockaddr /**< shortname for sockaddr */
 
@@ -40,6 +41,9 @@
 void cleanup() { WSACleanup(); }
 #endif
 
+static int scount = 0;
+static int rcount = 0;
+static struct timeval start_time;
 /**
  * Continuous loop to send and receive over the socket.
  * Exits when "exit" is sent from commandline.
@@ -47,24 +51,27 @@ void cleanup() { WSACleanup(); }
  */
 void func(int sockfd)
 {
+    
     char buff[MAX];
     //int n;
     char* payload = malloc(MAX);
     srand(time(0));
     for(int i = 0; i < MAX; i++){
-        printf("creating payload\n");
         payload[i] = rand() % 2 == 0 ? 'a' : 'b';
     }
-    printf("completed payload creation\n");
+    gettimeofday(&start_time, 0);
     // infinite loop for chat
     for (;;)
     {
+        
         bzero(buff, MAX);
 
         // read the message from client and copy it in buffer
+        //printf("Receiving payload %d\n", rcount++);
+        rcount++;
         read(sockfd, buff, sizeof(buff));
         // print buffer which contains the client contents
-        printf("From client: %s", buff);
+        //printf("From client: %s", buff);
         bzero(buff, MAX);
 
         /*n = 0;
@@ -76,6 +83,8 @@ void func(int sockfd)
 
         memcpy(buff, payload, MAX);
         // and send that buffer to client
+        //printf("Sending payload %d\n", scount++);
+        scount++;
         write(sockfd, buff, sizeof(buff));
 
         // if msg contains "Exit" then server exit and chat ended.
@@ -87,9 +96,20 @@ void func(int sockfd)
     }
 }
 
+
+static void handler(int _){
+    (void)_;
+    struct timeval tmptime;
+    gettimeofday(&tmptime, 0);
+    long total_time =    (tmptime.tv_usec / 1000 + tmptime.tv_sec * 1000) -    
+                        (start_time.tv_usec / 1000 + start_time.tv_sec * 1000);
+    printf("\n%d payloads sent\n%d payloads received\nTime taken: %ld\n", scount, rcount, total_time);
+    exit(EXIT_SUCCESS);
+}
 /** Driver code */
 int main()
 {
+    signal(SIGINT, handler);
 #ifdef _WIN32
     // when using winsock2.h, startup required
     WSADATA wsData;
@@ -158,7 +178,7 @@ int main()
     {
         printf("server acccept the client...\n");
     }
-
+    printf("In main\n");
     // Function for chatting between client and server
     func(connfd);
 
