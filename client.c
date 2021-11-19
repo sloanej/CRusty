@@ -89,9 +89,9 @@ static void handler(int _){
     long total_time =    (tmptime.tv_usec / 1000 + tmptime.tv_sec * 1000) -    
                         (start_time.tv_usec / 1000 + start_time.tv_sec * 1000);
 
-    int sspeed = scount * MAX / total_time * 1000;
-    int rspeed = rcount * MAX / total_time * 1000;
-    printf("\n%d payloads sent, %d bytes/s\n%d payloads received, %d bytes/s\nTime taken: %ld\n", scount, sspeed, rcount, rspeed, total_time);
+    float sspeed = ((float) scount) * MAX / total_time * (1000. / 1024);
+    float rspeed = ((float)rcount) * MAX / total_time * (1000. / 1024);
+    printf("\n%d payloads sent, %.2f kb/s\n%d payloads received, %.2f kb/s\nTime taken: %ld\n", scount, sspeed, rcount, rspeed, total_time);
     exit(EXIT_SUCCESS);
 }
 
