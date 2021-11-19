@@ -8,24 +8,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifdef _WIN32                            // if compiling for Windows
-#define _WINSOCK_DEPRECATED_NO_WARNINGS  // will make the code invalid for next
-                                         // MSVC compiler versions
-#include <winsock2.h>
-#define bzero(b, len) \
-    (memset((b), '\0', (len)), (void)0) /**< BSD name not in windows */
-#define read(a, b, c) recv(a, b, c, 0)  /**< map BSD name to Winsock */
-#define write(a, b, c) send(a, b, c, 0) /**< map BSD name to Winsock */
-#define close closesocket               /**< map BSD name to Winsock */
-#else                                   // if not windows platform
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <sys/time.h>
 #include <signal.h>
-#endif
 
 #define MAX 100000       /**< max. characters per message */
 #define PORT 8080          /**< port number to connect to */
@@ -52,29 +40,15 @@ void func(int sockfd)
     gettimeofday(&start_time, 0);
     for (;;)
     {
-        //bzero(buff, sizeof(buff));
-        /*printf("Enter the string : ");
-        n = 0;
-        while ((buff[n++] = getchar()) != '\n')
-        {
-            ;
-        }*/
-        //memcpy(buff, payload, MAX);
-        //printf("Sending payload %d\n", scount++);
         scount++;
         write(sockfd, payload, MAX);
         bzero(buff, sizeof(buff));
-        //printf("Receiving payload %d\n", rcount++);
+        
         rcount++;
         read(sockfd, buff, sizeof(buff));
-        //printf("From Server : %s", buff);
+        
     }
 }
-
-#ifdef _WIN32
-/** Cleanup function will be automatically called on program exit */
-void cleanup() { WSACleanup(); }
-#endif
 
 
 static void handler(int _){
@@ -97,18 +71,7 @@ static void handler(int _){
 int main()
 {
     signal(SIGINT, handler);
-#ifdef _WIN32
-    
-    // when using winsock2.h, startup required
-    WSADATA wsData;
-    if (WSAStartup(MAKEWORD(2, 2), &wsData) != 0)
-    {
-        perror("WSA Startup error: \n");
-        return 0;
-    }
 
-    atexit(cleanup);  // register at-exit function
-#endif
 
     int sockfd, connfd;
     struct sockaddr_in servaddr, cli;

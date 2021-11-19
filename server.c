@@ -9,37 +9,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-// #ifdef HAS_UNISTD
-// #include <unistd.h>
-// #endif
-
-#ifdef _WIN32
-#define _WINSOCK_DEPRECATED_NO_WARNINGS  // will make the code invalid for next
-                                         // MSVC compiler versions
-#include <winsock2.h>
-#define bzero(b, len) \
-    (memset((b), '\0', (len)), (void)0) /**< BSD name not in windows */
-#define read(a, b, c) recv(a, b, c, 0)  /**< map BSD name to Winsock */
-#define write(a, b, c) send(a, b, c, 0) /**< map BSD name to Winsock */
-#define close closesocket               /**< map BSD name to Winsock */
-#else
-// if not windows platform
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <sys/time.h>
 #include <signal.h>
-#endif
 
 #define MAX 100000             /**< max. characters per message */
 #define PORT 8080          /**< port number to connect to */
 #define SA struct sockaddr /**< shortname for sockaddr */
-
-#ifdef _WIN32
-/** Cleanup function will be automatically called on program exit */
-void cleanup() { WSACleanup(); }
-#endif
 
 static int scount = 0;
 static int rcount = 0;
@@ -63,27 +42,11 @@ void func(int sockfd)
     // infinite loop for chat
     for (;;)
     {
-        
         bzero(buff, MAX);
 
-        // read the message from client and copy it in buffer
-        //printf("Receiving payload %d\n", rcount++);
         rcount++;
         read(sockfd, buff, sizeof(buff));
-        // print buffer which contains the client contents
-        //printf("From client: %s", buff);
-        //bzero(buff, MAX);
 
-        /*n = 0;
-        // copy server message in the buffer
-        while ((buff[n++] = getchar()) != '\n')
-        {
-            ;
-        }*/
-
-        //memcpy(buff, payload, MAX);
-        // and send that buffer to client
-        //printf("Sending payload %d\n", scount++);
         scount++;
         write(sockfd, payload, MAX);
     }
@@ -106,17 +69,6 @@ static void handler(int _){
 int main()
 {
     signal(SIGINT, handler);
-#ifdef _WIN32
-    // when using winsock2.h, startup required
-    WSADATA wsData;
-    if (WSAStartup(MAKEWORD(2, 2), &wsData) != 0)
-    {
-        perror("WSA Startup error: \n");
-        return 0;
-    }
-
-    atexit(cleanup);  // register at-exit function
-#endif
 
     int sockfd, connfd;
     unsigned int len;
