@@ -44,7 +44,7 @@ void func(int sockfd)
 {
     char buff[MAX];
     //int n;
-    char* payload = malloc(MAX);
+    char payload[MAX];
     srand(time(0));
     for(int i = 0; i < MAX; i++){
         payload[i] = rand() % 2 == 0 ? 'a' : 'b';
@@ -52,27 +52,22 @@ void func(int sockfd)
     gettimeofday(&start_time, 0);
     for (;;)
     {
-        bzero(buff, sizeof(buff));
+        //bzero(buff, sizeof(buff));
         /*printf("Enter the string : ");
         n = 0;
         while ((buff[n++] = getchar()) != '\n')
         {
             ;
         }*/
-        memcpy(buff, payload, MAX);
+        //memcpy(buff, payload, MAX);
         //printf("Sending payload %d\n", scount++);
         scount++;
-        write(sockfd, payload, sizeof(buff));
+        write(sockfd, payload, MAX);
         bzero(buff, sizeof(buff));
         //printf("Receiving payload %d\n", rcount++);
         rcount++;
         read(sockfd, buff, sizeof(buff));
         //printf("From Server : %s", buff);
-        if ((strncmp(buff, "exit", 4)) == 0)
-        {
-            printf("Client Exit...\n");
-            break;
-        }
     }
 }
 

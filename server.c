@@ -54,7 +54,7 @@ void func(int sockfd)
     
     char buff[MAX];
     //int n;
-    char* payload = malloc(MAX);
+    char payload[MAX];
     srand(time(0));
     for(int i = 0; i < MAX; i++){
         payload[i] = rand() % 2 == 0 ? 'a' : 'b';
@@ -72,7 +72,7 @@ void func(int sockfd)
         read(sockfd, buff, sizeof(buff));
         // print buffer which contains the client contents
         //printf("From client: %s", buff);
-        bzero(buff, MAX);
+        //bzero(buff, MAX);
 
         /*n = 0;
         // copy server message in the buffer
@@ -81,18 +81,11 @@ void func(int sockfd)
             ;
         }*/
 
-        memcpy(buff, payload, MAX);
+        //memcpy(buff, payload, MAX);
         // and send that buffer to client
         //printf("Sending payload %d\n", scount++);
         scount++;
-        write(sockfd, buff, sizeof(buff));
-
-        // if msg contains "Exit" then server exit and chat ended.
-        if (strncmp("exit", buff, 4) == 0)
-        {
-            printf("Server Exit...\n");
-            break;
-        }
+        write(sockfd, payload, MAX);
     }
 }
 
