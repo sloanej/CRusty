@@ -59,11 +59,7 @@ static void test(int len)
     {
         arr[i] = (rand() % 10000) - 5000; /* signed random numbers */
     }
-    /*printf("Array before sorting:\n[");
-    for(int i = 0; i < size - 1; i++){
-        printf("%d, ", arr[i]);
-    }
-    printf("%d]\n", arr[size - 1]);*/
+    
     struct timeval start_time;
     gettimeofday(&start_time, 0);
     selectionSort(arr, size);
@@ -73,17 +69,7 @@ static void test(int len)
     long total_time =    (end_time.tv_usec / 1000 + end_time.tv_sec * 1000) -    
                         (start_time.tv_usec / 1000 + start_time.tv_sec * 1000);
     printf("Sorting with %d elements took %.2f seconds\n", len, total_time / 1000.);
-    /*printf("Array after sorting:\n[");
-    for(int i = 0; i < size - 1; i++){
-        printf("%d, ", arr[i]);
-    }
-    printf("%d]\n", arr[size - 1]);
-    for (int i = 0; i < size - 1; ++i)
-    {
-        assert(arr[i] <= arr[i + 1]);
-    }
-    free(arr);
-    printf("Test Passed\n");*/
+    
     free(arr);
 }
 
