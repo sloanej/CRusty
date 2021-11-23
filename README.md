@@ -1,5 +1,8 @@
 # CRusty
 
+See directories for each program for more info
+
+
 https://github.com/TheAlgorithms/C
 
 Selection Sort:
