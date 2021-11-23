@@ -1,1 +1,1 @@
-./target/release/rust_selection_sort $1
+cargo run --release $1

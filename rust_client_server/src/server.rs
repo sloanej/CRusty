@@ -1,6 +1,8 @@
 //https://doc.rust-lang.org/std/net/struct.TcpListener.html#method.incoming
 use std::net::{TcpListener, TcpStream};
 use std::io::{Read, Write};
+use std::process::exit;
+use ctrlc;
 
 fn handle_client(mut stream: TcpStream) -> std::io::Result<()>{
 
@@ -15,7 +17,8 @@ fn handle_client(mut stream: TcpStream) -> std::io::Result<()>{
 
 fn main() -> std::io::Result<()> {
     ctrlc::set_handler(move || {
-        println!("received Ctrl+C!");
+        println!("\nInsert metrics here :)");
+        exit(0);
     })
     .expect("Error setting Ctrl-C handler");
 

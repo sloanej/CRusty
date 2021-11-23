@@ -1,4 +1,4 @@
-Just a simple example patched together from Rust's documentation.
+use build.sh to build
 
-Use 'rustc -C opt-level=3 client.rs -o client' to compile client
-Use 'rustc -C opt-level=3 server.rs -o server' to compile server
+use run.sh client to run client
+use run.sh server to run server
