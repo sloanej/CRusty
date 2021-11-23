@@ -38,7 +38,8 @@ fn selection_sort(vals: &mut [i32]) {
         vals.swap(i, min);
     }
     let total_time = now.elapsed();
-    println!("Sorting with {} elements took {} seconds", vals.len(), total_time.as_millis() as f64 / 1000 as f64);
+    println!("Sorting with {} elements took {} seconds",
+        vals.len(), total_time.as_millis() as f64 / 1000 as f64);
 }
 
 fn find_min(vals: &[i32], start:usize) -> usize {
