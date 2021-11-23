@@ -3,6 +3,13 @@
 version = 3
 
 [[package]]
+name = "Rust"
+version = "0.1.0"
+dependencies = [
+ "ctrlc",
+]
+
+[[package]]
 name = "autocfg"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -62,13 +69,6 @@ dependencies = [
  "cfg-if",
  "libc",
  "memoffset",
-]
-
-[[package]]
-name = "rust_client_server"
-version = "0.1.0"
-dependencies = [
- "ctrlc",
 ]
 
 [[package]]
