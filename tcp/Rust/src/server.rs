@@ -5,10 +5,9 @@ use std::process::exit;
 use ctrlc;
 
 fn handle_client(mut stream: TcpStream) -> std::io::Result<()>{
-
     const BUFFER_SIZE: usize = 100000;
     let mut buffer: [u8 ; BUFFER_SIZE] = [4 ; BUFFER_SIZE];
-    //println!("{:?}", &buffer);
+    
     loop{
         stream.write(&mut buffer)?;
         stream.read_exact(&mut buffer)?;
@@ -21,9 +20,6 @@ fn main() -> std::io::Result<()> {
         exit(0);
     })
     .expect("Error setting Ctrl-C handler");
-
-
-
 
     let listener = TcpListener::bind("127.0.0.1:9000")?;
 

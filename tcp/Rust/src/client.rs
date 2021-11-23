@@ -12,9 +12,6 @@ fn main() -> std::io::Result<()> {
     .expect("Error setting Ctrl-C handler");
 
 
-
-
-
     const BUFFER_SIZE: usize = 100000;
 
     let mut stream = TcpStream::connect("127.0.0.1:9000")?;
@@ -26,25 +23,4 @@ fn main() -> std::io::Result<()> {
         stream.write(&mut buffer)?;
     }
 
-    /*loop{
-        match stream.read_exact(&mut buffer){
-            Ok(()) => {
-                //if size == 0 {return}
-                //println!("{:?}", &buffer);
-                /*for (index, num) in buffer.iter().enumerate() {
-                    if *num != 4 as u8{
-                        println!("bad{:?}", index);
-                        break;
-                    }
-                }*/
-                
-            },
-            Err(e) => {
-                println!("{:?}",e);
-                return Ok(());
-            }
-        }
-    }*/
-    
-    //Ok(())
 } // the stream is closed here
