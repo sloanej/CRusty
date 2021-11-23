@@ -3,31 +3,25 @@ use std::net::{TcpListener, TcpStream};
 use std::io::{Read, Write};
 
 fn handle_client(mut stream: TcpStream) -> std::io::Result<()>{
-    const BUFFER_SIZE: usize = 100000;
 
-    let mut buffer: [u8 ; BUFFER_SIZE] = [0 ; BUFFER_SIZE];
+    const BUFFER_SIZE: usize = 100000;
+    let mut buffer: [u8 ; BUFFER_SIZE] = [4 ; BUFFER_SIZE];
+    //println!("{:?}", &buffer);
     loop{
-        match stream.read_exact(&mut buffer){
-            Ok(()) => {
-                //if size == 0 {return}
-                //println!("{:?}", &buffer);
-                /*for (index, num) in buffer.iter().enumerate() {
-                    if *num != 4 as u8{
-                        println!("bad{:?}", index);
-                        break;
-                    }
-                }*/
-                
-            },
-            Err(e) => {
-                println!("{:?}",e);
-                return Ok(());
-            }
-        }
+        stream.write(&mut buffer)?;
+        stream.read_exact(&mut buffer)?;
     }
 }
 
 fn main() -> std::io::Result<()> {
+    ctrlc::set_handler(move || {
+        println!("received Ctrl+C!");
+    })
+    .expect("Error setting Ctrl-C handler");
+
+
+
+
     let listener = TcpListener::bind("127.0.0.1:9000")?;
 
     // accept connections and process them serially

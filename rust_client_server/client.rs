@@ -7,11 +7,32 @@ fn main() -> std::io::Result<()> {
 
     let mut stream = TcpStream::connect("127.0.0.1:9000")?;
 
+    let mut buffer: [u8 ; BUFFER_SIZE] = [0 ; BUFFER_SIZE];
 
-    let mut buffer: [u8 ; BUFFER_SIZE] = [4 ; BUFFER_SIZE];
-    //println!("{:?}", &buffer);
     loop{
+        stream.read_exact(&mut buffer)?;
         stream.write(&mut buffer)?;
     }
+
+    /*loop{
+        match stream.read_exact(&mut buffer){
+            Ok(()) => {
+                //if size == 0 {return}
+                //println!("{:?}", &buffer);
+                /*for (index, num) in buffer.iter().enumerate() {
+                    if *num != 4 as u8{
+                        println!("bad{:?}", index);
+                        break;
+                    }
+                }*/
+                
+            },
+            Err(e) => {
+                println!("{:?}",e);
+                return Ok(());
+            }
+        }
+    }*/
+    
     Ok(())
 } // the stream is closed here
