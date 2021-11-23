@@ -2,7 +2,7 @@
 # will have compiled files and executables
 selection_sort/Rust/target/
 selection_sort/C/selection_sort
-
+.vscode
 
 
 tcp/Rust/target/
