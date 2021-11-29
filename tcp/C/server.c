@@ -4,14 +4,15 @@
  * @author [Krishna Vedala](https://github.com/kvedala)
  * @brief Server side implementation of Server-Client system.
  * @see client_server/client.c
+ * 
+ * Updated by Jack Sloan, Matthew Jackson, and Ishaan Gulati
+ * 
+ * 
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <arpa/inet.h>
 #include <netdb.h>
-#include <sys/socket.h>
 #include <unistd.h>
 #include <sys/time.h>
 #include <signal.h>
