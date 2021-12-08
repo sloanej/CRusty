@@ -17,3 +17,4 @@ tcp/C/server
 # More information here https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html
 #Cargo.lock
 **/target
+selection_sort/corrode/selection_sort
