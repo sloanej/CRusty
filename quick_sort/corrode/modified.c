@@ -26,7 +26,7 @@
     }
 #define i2c(i) x[i][depth]
 
-void vecswap(int i, int j, int n, char *x[])
+void vecswap(int i, int j, int n, char **x)
 {
     while (n-- > 0)
     {
@@ -36,7 +36,7 @@ void vecswap(int i, int j, int n, char *x[])
     }
 }
 
-void ssort1(char *x[], int n, int depth)
+void ssort1(char **x, int n, int depth)
 {
     int a, b, c, d, r, v;
     if (n <= 1)
@@ -84,7 +84,7 @@ void ssort1(char *x[], int n, int depth)
     ssort1(x + n - r, r, depth);
 }
 
-void ssort1main(char *x[], int n) { ssort1(x, n, 0); }
+void ssort1main(char **x, int n) { ssort1(x, n, 0); }
 
 // ssort2 -- Faster Version of Multikey Quicksort
 
@@ -385,7 +385,8 @@ void nearsearch(Tptr p, char *s, int d)
 
 #define NUMBER_OF_STRING 3
 
-int main(int argc, char *argv[])
+int main()
+//int main(int argc, char *argv[])
 {
     char *arr[NUMBER_OF_STRING] = {"apple", "cat", "boy"};
 
