@@ -1,19 +1,6 @@
 # CRusty
 
-See directories for each program for more info
+## Project Description
+CRusty is a research project by Jack Sloane, Mathew Jackson, and Ishaan Gulati for a graduate level Programming Languages course at Virginia Tech. The problem that we investigate in this project is: How should developers go about updating legacy C code into memory safe Rust code? We look at the current research and methods related to automatic C to Rust translation tools. Then we compare these methods with manually translating legacy C systems to Rust.
 
-
-https://github.com/TheAlgorithms/C
-
-Selection Sort:
-
-    C:
-    Optional CLI argument can be specified to determine length of the array.
-    Default is random number between 1-500.
-    
-    Rust:
-    Length must be specified.
-    To run use:
-    cd rust_selection_sort
-    ./build.sh
-    ./run.sh <len>
+See "CRusty Project Report" for more details.
